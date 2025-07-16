@@ -99,3 +99,46 @@ def titleize(phrase):
     except:
         return "Please provide a valid string."
 
+# Task 9: Hangman, with more String Operations
+def hangman(secret, guess):
+    try:
+        result = ""
+        for letter in secret:
+            if letter in guess:
+                result += letter
+            else:
+                result += "_"
+        return result
+    except:
+        return "Please provide valid strings."
+
+# Task 10: Pig Latin, Another String Manipulation Exercise
+def pig_latin(phrase):
+    try:
+        vowels = "aeiou"
+        result = []
+        words = phrase.split()
+        # pig latin engineering starts here
+        for word in words:
+            if word.startswith("qu"):
+                # move "qu " to the end
+                pig = word[2:] + "quay"
+            elif word[0] in vowels:
+                # if word starts with a vowel, add "ay" to the end
+                pig = word + "ay"
+            else:
+                # added after failing test of "qu"
+                if "qu" in word:
+                    i = word.index("qu") + 2 # handles "qu" chunk
+                    pig = word[i:] + word[:i] + "ay"
+                else:
+                # move the first consonant cluster to the end and add "ay"
+                    for i, char in enumerate(word):
+                        if char in vowels:
+                            pig = word[i:] + word[:i] + "ay"
+                            break # stop the loop when the first vowel is found
+            result.append(pig) # words to result
+        
+        return " ".join(result) # put it all together
+    except:
+        return "Please provide a valid string."
