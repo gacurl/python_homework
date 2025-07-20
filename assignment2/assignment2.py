@@ -76,13 +76,78 @@ def sort_by_last_name():
 
 # Task 8: Create a dict for an Employee
 def employee_dict(row):
-    result_dict = {} # Initialize empty dict to store employee data
+    employee_result_dict = {} # Initialize empty dict to store employee data
+
     for i in range(len(employees["fields"])): # loop through each column header index
         field = employees["fields"][i] # column name
         if field == "employee_id": #skip employee_id column
             continue
-        result_dict[field] = row[i]
-    return result_dict # Return the resulting dictionary
+        employee_result_dict[field] = row[i]
+    return employee_result_dict # Return the resulting dictionary
 
 print("Task 8:")
 print(employee_dict(employees["rows"][17]))
+
+# Task 9: A dict of dicts, for All Employees
+def all_employees_dict():
+    employees_result_dict = {} # Initialize empty dict to hold the employee_id as keys
+
+    for row in employees["rows"]:
+        employee_id = row[employee_id_column]   # get employee_id from the row
+        employee_details = employee_dict(row)   # call employee_dict() to get employee details
+        employees_result_dict[employee_id] = employee_details # Add employee_id and employee dict to the new dict
+    # Return the dictionary of employee dicts
+    return employees_result_dict
+
+all_employees = all_employees_dict()
+print("Task 9:")
+print(all_employees)
+
+# Task 10: Use the os Module
+import os
+
+def get_this_value():
+    return os.getenv("THISVALUE")
+
+# Task 11: Creating Your Own Module
+import custom_module
+
+def set_that_secret(new_secret):
+    custom_module.set_secret(new_secret)
+
+set_that_secret("GUMBALL")
+
+print("Task 11:")
+print(custom_module.secret)
+
+# Task 12: Read minutes1.csv and minutes2.csv
+import csv
+
+# function to read files
+def read_minutes():
+    minutes1_dict = {}
+    minutes2_dict = {}
+
+# helper function to read and return dict
+def read_file(path):
+    try:
+        with open("../csv/minutes1.csv", )
+        # Store the first row as "fields"
+        # Store remaining rows as list of tuples in "rows"
+        # Return dict with keys "fields" and "rows"
+        pass
+
+    # Call helper function for each file and store results in respective dicts
+    minutes1_dict = read_file("../csv/minutes1.csv")
+    minutes2_dict = read_file("../csv/minutes2.csv")
+    
+    # Return both dicts
+    return minutes1_dict, minutes2_dict
+
+# Call function and store return values in global variables
+minutes1, minutes2 = read_minutes()
+
+# Print both to verify
+print(minutes1)
+print(minutes2)
+
