@@ -61,5 +61,28 @@ def employee_find(employee_id):
     matches = list(filter(employee_match, employees["rows"])) # returns only rows that match the given ID and convert result to list
     return matches
 
+# Task 6: Find the Employee with a Lambda
+def employee_find_2(employee_id):
+    matches = list(filter(lambda row: int(row[employee_id_column]) == employee_id , employees["rows"])) # lambda = for each row do X
+    return matches
 
+# Task 7: Sort the Rows by last_name Using a Lambda
+def sort_by_last_name():
+    last_name_index = column_index("last_name") # Find the column index of "last_name"
+    # Sort the list of employee rows based on the last_name column
+    employees["rows"].sort(key=lambda row: row[last_name_index]) # use a lambda + sort() method to extract the correct column; sorts IN PLACE
+    # Return the sorted list of rows
+    return employees["rows"]
 
+# Task 8: Create a dict for an Employee
+def employee_dict(row):
+    result_dict = {} # Initialize empty dict to store employee data
+    for i in range(len(employees["fields"])): # loop through each column header index
+        field = employees["fields"][i] # column name
+        if field == "employee_id": #skip employee_id column
+            continue
+        result_dict[field] = row[i]
+    return result_dict # Return the resulting dictionary
+
+print("Task 8:")
+print(employee_dict(employees["rows"][17]))
