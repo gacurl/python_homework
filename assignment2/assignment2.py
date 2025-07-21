@@ -1,3 +1,5 @@
+from datetime import datetime
+
 # Task 2: Read a CSV File
 import csv
 import traceback
@@ -121,33 +123,104 @@ print("Task 11:")
 print(custom_module.secret)
 
 # Task 12: Read minutes1.csv and minutes2.csv
-import csv
 
-# function to read files
-def read_minutes():
-    minutes1_dict = {}
-    minutes2_dict = {}
+def read_minutes_file(file_path): # helper function that reads and returns dict
+    result  = {}
+    rows    = []
 
-# helper function to read and return dict
-def read_file(path):
     try:
-        with open("../csv/minutes1.csv", )
-        # Store the first row as "fields"
-        # Store remaining rows as list of tuples in "rows"
-        # Return dict with keys "fields" and "rows"
-        pass
+        with open(file_path, "r", newline="") as file: # open the file
+            reader = csv.reader(file)
 
-    # Call helper function for each file and store results in respective dicts
-    minutes1_dict = read_file("../csv/minutes1.csv")
-    minutes2_dict = read_file("../csv/minutes2.csv")
+            headers = next(reader) # grab the first line
+            result["fields"] = headers
+
+            # get the rest
+            for row in reader:
+                rows.append(tuple(row)) # convert to a tuple
+            result["rows"] = rows
     
-    # Return both dicts
-    return minutes1_dict, minutes2_dict
+    except Exception as err: # if something breaks, catch the error (err)
+        trace_back = traceback.extract_tb(err.__traceback__)
+        stack_trace = list()
+        for trace in trace_back:
+            stack_trace.append(f'File : {trace[0]} , Line : {trace[1]}, Func.Name : {trace[2]}, Message : {trace[3]}')
+        print(f"Exception type: {type(err).__name__}")
+        message = str(err)
+   
+        if message:
+            print(f"Exception message: {message}")
+        print(f"Stack trace: {stack_trace}")
 
-# Call function and store return values in global variables
-minutes1, minutes2 = read_minutes()
+    return result # return dict with headers and rows
 
-# Print both to verify
+def read_minutes(): # reads and returns from both files
+    minutes1 = read_minutes_file("../csv/minutes1.csv")
+    minutes2 = read_minutes_file("../csv/minutes2.csv")
+    return minutes1, minutes2
+
+minutes1, minutes2 = read_minutes() # store in global variable
+
+# test and verify
+print("Task 12: ")
 print(minutes1)
 print(minutes2)
 
+# Task 13: Create minutes_set
+def create_minutes_set():
+    # convert rows to sets
+    minutes_1_set = set(minutes1["rows"])
+    minutes_2_set = set(minutes2["rows"])
+
+    # Use the union operator (|) to combine both sets into one
+    combined_minutes = minutes_1_set | minutes_2_set
+
+    return combined_minutes # gather 'em up
+
+minutes_set = create_minutes_set() # store in global variable
+
+# Task 14: Convert to datetime
+# from line is at top of file
+def create_minutes_list():
+    minutes_list = list(minutes_set) # convert set to list
+
+    # convert 'em
+    converted_list = list(
+        map(
+            lambda x: (x[0], datetime.strptime(x[1], "%B %d, %Y")),
+            minutes_list
+        )
+    )
+
+    return converted_list # return list with datetime objects
+
+minutes_list = create_minutes_list() # store in global variable
+
+print("Minutes with datetime objects:", minutes_list) # print to see conversion
+
+# Task 15: Write Out Sorted List
+def write_sorted_list():
+    minutes_list.sort(key=lambda row: row[1]) # sort the list
+
+    # Convert datetime objects using map
+    converted = list(
+        map(
+            lambda row: (row[0], row[1].strftime("%B %d, %Y")),
+            minutes_list
+        )
+    )
+
+    # Write to minutes.csv
+    with open("minutes.csv", "w", newline="") as file:
+        writer = csv.writer(file)
+
+        writer.writerow(minutes1["fields"]) # column headers
+
+        for row in converted: # write rows
+            writer.writerow(row)
+
+    # Return the converted list
+    return converted
+
+minutes_written = write_sorted_list()
+print(minutes_written)
