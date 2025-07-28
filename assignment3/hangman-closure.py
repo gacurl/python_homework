@@ -12,7 +12,7 @@ def make_hangman(secret_word):
         print("".join(word_with_underscores)) # show progress
 
         # is the word guessed?
-        if word_with_underscores == list(secret_word): # compare them
+        if word_with_underscores == list(secret_word): # compare them; tytpe cast the list?
             print("You SOLVED it!") # winning message
             return True
         else:
