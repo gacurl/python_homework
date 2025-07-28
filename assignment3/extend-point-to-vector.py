@@ -25,7 +25,7 @@ class Vector(Point): # inherits from Point
         return f"<{self.x}, {self.y}>"
     
     def __add__(self, other):
-        return f"The new vector is <{self.x + other.x}, {self.y + other.y}>"
+        return Vector(self.x + other.x, self.y + other.y)
 
 # Create a couple of trucks
 truck1 = Point(10, 5)
