@@ -28,7 +28,7 @@ json_employees = pd.read_json('additional_employees.json')
 # print(json_employees)
 
 more_employees = pd.concat([task2_employees, json_employees], ignore_index=True)
-print(more_employees)
+# print(more_employees)
 
 # Task 3: Data Inspection - Using Head, Tail, and Info Methods
 first_three = more_employees.head(3)
@@ -40,9 +40,40 @@ last_two = more_employees.tail(2)
 employee_shape = more_employees.shape
 # print(employee_shape)
 
-df_info = more_employees.info()
-print(df_info)
+# df_info = more_employees.info()
 
 # Task 4: Data Cleaning
 
+dirty_data = pd.read_csv('dirty_data.csv')
+# print(dirty_data)
+
+clean_data = dirty_data.copy()
+# print(clean_data)
+
+clean_data = clean_data.drop_duplicates()
+# print(clean_data)
+
+convert_age = pd.to_numeric(clean_data["Age"], errors='coerce')
+clean_data["Age"] = convert_age
+# print(clean_data)
+
+convert_salary = pd.to_numeric(clean_data["Salary"], errors='coerce')
+clean_data["Salary"] = convert_salary
+# print(clean_data)
+
+mean_age = clean_data["Age"].mean()
+median_salary = clean_data["Salary"].median()
+clean_data = clean_data.fillna({"Age": mean_age, "Salary": median_salary})
+
+convert_date = pd.to_datetime(clean_data["Hire Date"], errors='coerce')
+clean_data["Hire Date"] = convert_date
+clean_data["Hire Date Missing"] = clean_data["Hire Date"].isna() # test failure but not listed in assignment
+clean_data["Hire Date"] = clean_data["Hire Date"].fillna("2000-01-01") # has last test 
+
+
+standardize_name = clean_data["Name"].str.strip().str.upper()
+standardize_dept = clean_data["Department"].str.strip().str.upper()
+clean_data["Name"] = standardize_name
+clean_data["Department"] = standardize_dept
+print(clean_data)
 
