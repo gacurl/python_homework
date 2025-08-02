@@ -1,0 +1,13 @@
+
+function: hello_world
+positional arguments: none
+keyword arguments: none
+return None
+function: pos_args
+positional arguments: (3, 'seventeen', 65)
+keyword arguments: none
+return True
+function: keywrd_args
+positional arguments: none
+keyword arguments: {'name': 'Alice', 'age': 30}
+return <function logger_decorator at 0x106d336a0>
