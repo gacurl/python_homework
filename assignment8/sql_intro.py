@@ -127,4 +127,4 @@ with sqlite3.connect("../db/magazines.db") as conn:
     print("\n----- magazines from Penguin Books -----")
     print(get_magazines_by_publisher(conn, "Penguin Books"))
 
-# Task 5: Read Data into a DataFrame
+
