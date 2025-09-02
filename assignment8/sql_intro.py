@@ -63,17 +63,17 @@ def add_publisher(conn, name):      # define the function
 
 def add_magazine(conn, name, publisher_id):      # define the function
     cursor = conn.cursor()          # talk to DB
-    cursor.execute("INSERT INTO magazines (name, publisher_id) VALUES (?, ?)", (name, publisher_id,)) #run SQLite with both values
+    cursor.execute("INSERT INTO magazines (name, publisher_id) VALUES (?, ?)", (name, publisher_id,)) # run SQLite with both values
     conn.commit()                   # save the change
 
 def add_subscriber(conn, name, address):      # define the function
     cursor = conn.cursor()          # talk to DB
-    cursor.execute("INSERT INTO subscribers (name, address) VALUES (?, ?)", (name, address,)) #run SQLite with both values
+    cursor.execute("INSERT INTO subscribers (name, address) VALUES (?, ?)", (name, address,)) # run SQLite with both values
     conn.commit()                   # save the change
 
 def add_subscriptions(conn, subscriber_id, magazine_id, expiration_date):      # define the function
     cursor = conn.cursor()          # talk to DB
-    cursor.execute("INSERT INTO subscriptions (subscriber_id, magazine_id, expiration_date) VALUES (?, ?, ?)", (subscriber_id, magazine_id, expiration_date,)) #run SQLite with all values
+    cursor.execute("INSERT INTO subscriptions (subscriber_id, magazine_id, expiration_date) VALUES (?, ?, ?)", (subscriber_id, magazine_id, expiration_date,)) # run SQLite with all values
     conn.commit()                   # save the change
 
 with sqlite3.connect("../db/magazines.db") as conn:
@@ -96,3 +96,35 @@ with sqlite3.connect("../db/magazines.db") as conn:
     add_subscriptions(conn, 1, 1, "2025-12-31")     # John -> Science Monthly
     add_subscriptions(conn, 2, 2, "2026-03-14")     # LEERoy -> History Today
     add_subscriptions(conn, 3, 3, "2030-10-31")     # Milburn -> Data is COOL!
+
+# Task 4: Write SQL Queries
+
+def get_subscribers(conn):
+    cursor = conn.cursor()                          # talk to DB
+    cursor.execute("SELECT * FROM subscribers;")     # run the query
+    return cursor.fetchall()                        # returns rows as list of tuples
+
+def get_magazines(conn):
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM magazines ORDER BY name ASC;")
+    return cursor.fetchall()
+
+def get_magazines_by_publisher(conn, publisher_name):
+    cursor = conn.cursor()
+    cursor.execute("""
+        SELECT magazines.name
+        FROM magazines
+        JOIN publishers ON magazines.publisher_id = publishers.publisher_id
+        WHERE publishers.name = ?;
+    """, (publisher_name,))
+    return cursor.fetchall()
+
+with sqlite3.connect("../db/magazines.db") as conn:
+    print("----- all subscribers info -----")
+    print(get_subscribers(conn))
+    print("\n----- magazines sorted by name -----")
+    print(get_magazines(conn))
+    print("\n----- magazines from Penguin Books -----")
+    print(get_magazines_by_publisher(conn, "Penguin Books"))
+
+# Task 5: Read Data into a DataFrame
