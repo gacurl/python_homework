@@ -78,7 +78,43 @@ def task2(conn):
         avg_val = row[1]
         print(row[0], "0.00" if avg_val is None else f"{avg_val:.2f}")
 
-# # --- Task 3: Insert Transaction Based on Data ---
+# --- Task 3: Insert Transaction Based on Data ---
+def task3(conn):
+    print("\nTask 3: Insert Transaction Based on Data")
+    # 1. Unit of result? create ONE new order (+ 5 line_items)
+    # 2. Who? Customer "Perez and Sons", Employee "Miranda Harris"
+        # get their customer_id, employee_id, and list of 5 cheapest
+    # 3. What items? 10 units of each of the 5 cheapest products
+        # pids * 10
+    # 4. Do I need a transaction? YES (BEGIN -> inserts -> COMMIT; ROLLBACK on error)
+    # 5. How to verify? SELECT JOIN line_items->products for the new order_id
+    # Safety? PRAGMA foreign_keys = 1 after connecting
+    conn.execute("PRAGMA foreign_keys = 1") # belt-and-suspenders
+    cust_id = conn.execute(
+        "SELECT customer_id FROM customers WHERE customer_name = ?",
+        ("Perez and Sons",)
+    ).fetchone()[0]
+
+    emp_id = conn.execute(
+        "SELECT employee_id FROM employees WHERE first_name = ? AND last_name = ?",
+        ("Miranda", "Harris",)
+    ).fetchone()[0]
+
+    rows = conn.execute(
+        "SELECT product_id FROM products ORDER BY price ASC LIMIT 5"
+    ).fetchall()
+
+    pids = []
+    for row in rows:
+        pids.append(row[0])
+
+    print("cust_id:", cust_id)
+    print("emp_id:", emp_id)
+    print("pids:", pids)   # should be 5 ids
+
+
+
+
 
 
 def main():
@@ -87,7 +123,7 @@ def main():
     conn.execute("PRAGMA foreign_keys = 1")
     task1(conn)
     task2(conn)
-#         # task3(conn)
+    task3(conn)
 #         # task4(conn)
 #         pass
 
