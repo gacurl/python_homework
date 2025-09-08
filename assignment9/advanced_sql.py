@@ -80,7 +80,7 @@ def task2(conn):
 
 # --- Task 3: Insert Transaction Based on Data ---
 def task3(conn):
-    print("\nTask 3: Insert Transaction Based on Data")
+    print("\n—------- Task 3: Insert Transaction Based on Data —-------")
     # 1. Unit of result? create ONE new order (+ 5 line_items)
     # 2. Who? Customer "Perez and Sons", Employee "Miranda Harris"
         # get their customer_id, employee_id, and list of 5 cheapest
@@ -108,13 +108,34 @@ def task3(conn):
     for row in rows:
         pids.append(row[0])
 
-    print("cust_id:", cust_id)
-    print("emp_id:", emp_id)
-    print("pids:", pids)   # should be 5 ids
+    conn.execute("BEGIN")
+    cur = conn.execute(
+        "INSERT INTO orders (customer_id, employee_id, date) "
+        "VALUES (?, ?, DATE('now'))",
+        (cust_id, emp_id)
+    )
+    order_id = cur.lastrowid
 
+    for pid in pids:
+        conn.execute(
+            "INSERT INTO line_items (order_id, product_id, quantity) "
+            "VALUES (?, ?, ?)",
+            (order_id, pid, 10)
+        )
+    
+    conn.commit
 
+    # verify entry
+    rows = conn.execute("""
+        SELECT li.line_item_id, li.quantity, p.product_name
+        FROM line_items AS li
+        JOIN products AS p ON p.product_id = li.product_id
+        WHERE li.order_id = ?
+        ORDER BY li.line_item_id
+    """, (order_id,)).fetchall()
 
-
+    for row in rows:
+        print(row[0], row[1], row[2])
 
 
 def main():
