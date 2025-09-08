@@ -123,7 +123,7 @@ def task3(conn):
             (order_id, pid, 10)
         )
     
-    conn.commit
+    conn.commit()
 
     # verify entry
     rows = conn.execute("""
@@ -137,6 +137,37 @@ def task3(conn):
     for row in rows:
         print(row[0], row[1], row[2])
 
+# --- Task 4: Aggregation with HAVING (> 5 orders per employee) ---
+def task4(conn):
+    print("\n-------- Task 4: Employees with more than 5 orders --------")
+
+    # Step 0 (translate):
+    # - Unit of result? -> employee
+    # - What math? -> COUNT of that employee's orders
+    # - Which tables/columns? -> employees (employee_id, first_name, last_name),
+    #                            orders (employee_id, order_id)
+    # - Need HAVING? -> yes, keep only groups where COUNT > 5
+
+    # --- Task 4: Aggregation with HAVING (> 5 orders per employee) ---
+    sql = """
+        SELECT
+            e.employee_id,
+            e.first_name,
+            e.last_name,
+            COUNT(o.order_id) AS order_count
+        FROM employees e
+        JOIN orders o ON o.employee_id = e.employee_id
+        GROUP BY e.employee_id
+        HAVING COUNT(o.order_id) > 5
+        ORDER BY order_count DESC;
+        """
+    
+    rows = conn.execute(sql).fetchall()
+    print("rows_found:", len(rows))
+    for r in rows:
+        print(r[0], r[1], r[2], r[3])
+
+
 
 def main():
     test_connection()
@@ -145,8 +176,7 @@ def main():
     task1(conn)
     task2(conn)
     task3(conn)
-#         # task4(conn)
-#         pass
+    task4(conn)
 
 if __name__ == "__main__":
     main()
