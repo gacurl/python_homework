@@ -13,7 +13,7 @@
 # Task 2: Understanding HTML and the DOM for the Durham Library Site
 # # ----- selectors from DOM -----
 # CSS_RESULT_LI = "li.row.cp-search-result-item"
-# CSS_TITLE = "h2.cp-title title-content"
+# CSS_TITLE = "h2.cp-title .title-content"
 # CSS_AUTHOR_LINKS = ".cp-by-author-block a"
 # CSS_FMT_YEAR_WRAPPER = ".cp-format-info .display-info"
 # CSS_FMT_YEAR_SPAN = ".display-info-primary"
