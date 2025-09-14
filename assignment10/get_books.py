@@ -87,4 +87,5 @@ with open("get_books.json", "w", encoding="utf-8") as json_file:
     json.dump(results, json_file, indent=4, ensure_ascii=False)
 
 # Task 5: Ethical Web Scraping
-
+# see ethical_scraping.txt file
+# Task 6: Scraping Structured Data
