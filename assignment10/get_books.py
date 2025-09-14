@@ -23,6 +23,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from time import sleep
 import pandas as pd
+# import csv
 import json
 
 opts = webdriver.ChromeOptions()
@@ -36,6 +37,8 @@ CSS_TITLE               = "h2.cp-title .title-content"
 CSS_AUTHOR_LINKS        = ".cp-by-author-block a"
 CSS_FMT_YEAR_WRAPPER    = ".cp-format-info .display-info"
 CSS_FMT_YEAR_SPAN       = ".display-info-primary"
+# Optional:
+CRAWL_DELAY             = 120
 
 driver.get(SEARCH_URL)
 # print("Title: ", driver.title)
@@ -71,7 +74,17 @@ for li in cards:
 # print("rows built: ", len(results))
 # print(results)
 df = pd.DataFrame(results, columns=["Title", "Authors", "Format-Year"])
-print(df.head(10))
 
 driver.quit()
+
+# Task 4: Write out the Data
+print(df.head(10))
+
+# to CSV
+df.to_csv("get_books.csv", index=False)
+# to JSON
+with open("get_books.json", "w", encoding="utf-8") as json_file:
+    json.dump(results, json_file, indent=4, ensure_ascii=False)
+
+# Task 5: Ethical Web Scraping
 

@@ -1,0 +1,15 @@
+Wikipedia robots.txt
+Date retrieved: September 13, 2025
+URL: https://en.wikipedia.org/robots.txt
+
+Which sections of the website are restricted for crawling?
+/w/,
+/api/,
+/trap/,
+and all “Special:” pages (including localized variants like /wiki/Special:, /wiki/Spezial:, /wiki/Spesial:)
+
+Are there specific rules for certain user agents?
+es. Examples include MJ12bot (blocked entirely), Mediapartners-Google* (blocked), and SemrushBot (allowed with a crawl-delay: 5). Many copier/downloader bots are fully disallowed.
+
+Reflection:
+- Websites publish robots.txt to declare which paths automated agents may crawl and to set guardrails (like rate limits) that protect infrastructure. Respecting robots.txt reduces server load, avoids hitting internal/admin endpoints, and signals good-faith behavior by scrapers. For ethical scraping, I will only fetch allowed paths, honor any crawl-delay or similar guidance, and keep requests minimal.
