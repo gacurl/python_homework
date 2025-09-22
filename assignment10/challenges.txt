@@ -1,0 +1,15 @@
+Challenges (Week 10 – Task 6):
+XPath was the hardest. I kept getting 0 or too many results because CSS couldn’t target the exact Top 10 list. Testing with Chrome’s $x() and scoping to the heading  to the next <ul> fixed it.
+Also moving from “seeing” links to saving data in Python was new, but a simple list of {"title","href"} plus csv.DictWriter with a header made it click.
+
+Other roadblocks (earlier assignments):
+1) .Venv in two terminals: activate in each shell; verify with `which python` / `python -V`.
+2) SQL ran early: stray semicolon after WHERE; omit `;` until the statement is complete.
+3) GROUP BY vs HAVING: do row math first, then aggregate in an outer SELECT.
+4) robots.txt details: missed Disallow/Crawl-delay; respect 120s on Bibliocommons when paginating.
+5) Selector mismatch: `<main>` + relative CSS returned 0; used `a[href*='/Top10/A']` and heading-scoped XPath.
+6) Be polite (sleep): pause after each `driver.get()`; add small jitter if looping pages.
+7) CSV header: fix with `csv.DictWriter(...).writeheader()` and matching keys.
+8) Write to parent csv/: Path(__file__).resolve().parent.parent / "csv" / "file.csv"; ensure folder exists.
+9) Extra/duplicate links: scope XPath to the “Top 10…” heading → next <ul>.
+10) Relative URLs: if href starts with "/Top10/", prefix "https://owasp.org".
